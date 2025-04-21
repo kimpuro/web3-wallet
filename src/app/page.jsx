@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { useSnapshot } from 'valtio';
-import web3Store from '../store/web3Store';
+import { state, web3Store } from '../store/web3Store';
 
 export default function Home() {
     // Valtio store의 스냅샷을 구독
-    const { account, balance } = useSnapshot(web3Store);
+    const { account, balance } = useSnapshot(state);
     const [recipient, setRecipient] = useState('');
     const [amount, setAmount] = useState('');
 

@@ -1,10 +1,22 @@
 import { proxy } from 'valtio';
 import { ethers } from 'ethers';
 
-// Web3 상태를 관리하는 store 생성
-const web3Store = proxy({
+// 상태로 관리할 값만 proxy로 감싸기
+const state = proxy({
     account: null,
-    balance: null,
+    balance: null
+});
+
+// 일반 객체로 함수들을 정의
+const web3Store = {
+    // 상태 업데이트 함수
+    setAccount(account) {
+        state.account = account;
+    },
+
+    setBalance(balance) {
+        state.balance = balance;
+    },
 
     // 지갑 연결 함수
     async connectWallet() {
@@ -15,11 +27,11 @@ const web3Store = proxy({
 
         try {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            this.account = accounts[0];
+            this.setAccount(accounts[0]);
 
             const provider = new ethers.BrowserProvider(window.ethereum);
             const balance = await provider.getBalance(accounts[0]);
-            this.balance = ethers.formatEther(balance);
+            this.setBalance(ethers.formatEther(balance));
         } catch (error) {
             console.error('지갑 연결 실패:', error);
         }
@@ -27,7 +39,7 @@ const web3Store = proxy({
 
     // 송금 함수
     async sendTransaction(to, amount) {
-        if (!this.account) {
+        if (!state.account) {
             alert('먼저 지갑을 연결해주세요!');
             return;
         }
@@ -46,6 +58,6 @@ const web3Store = proxy({
             alert('송금에 실패했습니다.');
         }
     }
-});
+};
 
-export default web3Store; 
+export { state, web3Store };
