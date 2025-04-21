@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { useWeb3 } from './contexts/Web3Context';
+import { useSnapshot } from 'valtio';
+import web3Store from './store/web3Store';
 
 export default function Home() {
-    const { account, balance, connectWallet, sendTransaction } = useWeb3();
+    // Valtio store의 스냅샷을 구독
+    const { account, balance } = useSnapshot(web3Store);
     const [recipient, setRecipient] = useState('');
     const [amount, setAmount] = useState('');
 
@@ -14,7 +16,7 @@ export default function Home() {
             alert('수신자 주소와 금액을 입력해주세요!');
             return;
         }
-        await sendTransaction(recipient, amount);
+        await web3Store.sendTransaction(recipient, amount);
         setRecipient('');
         setAmount('');
     };
@@ -26,7 +28,7 @@ export default function Home() {
 
                 {!account ? (
                     <button
-                        onClick={connectWallet}
+                        onClick={() => web3Store.connectWallet()}
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                     >
                         MetaMask 연결
