@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useSnapshot } from 'valtio';
-import web3Store from './store/web3Store';
+import web3Store from '../store/web3Store';
 
 export default function Home() {
     // Valtio store의 스냅샷을 구독
