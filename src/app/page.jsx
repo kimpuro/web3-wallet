@@ -25,7 +25,8 @@ export default function Home() {
     return (
         <main className="min-h-screen p-8">
             <div className="max-w-md mx-auto">
-                <h1 className="text-2xl font-bold mb-6">Web3 지갑(개발 진행 중입니다.)</h1>
+                <h1 className="text-2xl font-bold mb-6">Web3 지갑</h1>
+                <p>(개발 진행 중입니다.)</p>
 
                 {!account ? (
                     <div className="flex flex-col gap-2">
