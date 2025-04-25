@@ -88,7 +88,7 @@ export default function Home() {
                         </form>
                     </div>
                 )}
-                      <Link href="https://github.com/kimpuro/web3-wallet/commits/main/"
+                      <Link href="https://github.com/kimpuro/web3-wallet/commits/main/" target="_blank"
         className="rounded bg-cyan-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
       >
         깃허브 커밋 로그
