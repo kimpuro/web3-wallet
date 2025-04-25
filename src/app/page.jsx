@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useSnapshot } from 'valtio';
 import { state, web3Store } from '../store/web3Store';
+import Link from 'next/link';
 
 export default function Home() {
     // Valtio store의 스냅샷을 구독
@@ -24,7 +25,7 @@ export default function Home() {
     return (
         <main className="min-h-screen p-8">
             <div className="max-w-md mx-auto">
-                <h1 className="text-2xl font-bold mb-6">Web3 지갑</h1>
+                <h1 className="text-2xl font-bold mb-6">Web3 지갑(개발 진행 중입니다.)</h1>
 
                 {!account ? (
                     <div className="flex flex-col gap-2">
@@ -86,6 +87,11 @@ export default function Home() {
                         </form>
                     </div>
                 )}
+                      <Link href="https://github.com/kimpuro/web3-wallet/commits/main/"
+        className="rounded bg-cyan-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+        깃허브 커밋 로그
+        </Link>
             </div>
         </main>
     );
