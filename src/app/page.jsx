@@ -27,12 +27,21 @@ export default function Home() {
                 <h1 className="text-2xl font-bold mb-6">Web3 지갑</h1>
 
                 {!account ? (
+                    <div className="flex flex-col gap-2">
                     <button
                         onClick={() => web3Store.connectWallet()}
                         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                     >
                         MetaMask 연결
                     </button>
+                                        <button
+                                        onClick={() => web3Store.connectWallet()}
+                                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                    >
+                                        Trust Wallet 연결
+                                    </button>
+                                    </div>
+                    
                 ) : (
                     <div className="space-y-4">
                         <div className="p-4 bg-gray-100 rounded">
