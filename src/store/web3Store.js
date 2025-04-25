@@ -19,7 +19,8 @@ const web3Store = {
     },
 
     // 지갑 연결 함수
-    async connectWallet() {
+    async connectWallet(walletType) {
+        if (walletType === 'metamask') {
         if (typeof window.ethereum === 'undefined') {
             alert('MetaMask를 설치해주세요!');
             return;
@@ -35,6 +36,24 @@ const web3Store = {
         } catch (error) {
             console.error('지갑 연결 실패:', error);
         }
+    }
+    if (walletType === 'trust') {
+        if (typeof window.ethereum === 'undefined') {
+            alert('Trust Wallet을 설치해주세요!');
+            return;
+        }
+
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            this.setAccount(accounts[0]);
+
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const balance = await provider.getBalance(accounts[0]);
+            this.setBalance(ethers.formatEther(balance));
+        } catch (error) {
+            console.error('지갑 연결 실패:', error);
+        }
+    }
     },
 
     // 송금 함수
