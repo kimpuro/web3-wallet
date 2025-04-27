@@ -26,7 +26,9 @@ export default function Home() {
         <main className="min-h-screen p-8">
             <div className="max-w-md mx-auto">
                 <h1 className="text-2xl font-bold mb-6">Web3 지갑</h1>
-                <p>(개발 진행 중입니다.)</p>
+                <p>두 개의 지갑 모두 EIP-1193 표준을 따르기 때문에 window.ethereum 객체를 통해 접근</p>
+                <p>window.ethereum 객체는 설치된 지갑이 한 개일 때는 그 지갑을</p>
+                <p>설치된 지갑이 여러 개일 때는 기본으로 설정된 지갑을 사용</p>
 
                 {!account ? (
                     <div className="flex flex-col gap-2">
