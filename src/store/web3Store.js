@@ -20,40 +20,55 @@ const web3Store = {
 
     // 지갑 연결 함수
     async connectWallet(walletType) {
-        if (walletType === 'metamask') {
         if (typeof window.ethereum === 'undefined') {
-            alert('MetaMask를 설치해주세요!');
+            alert(`${walletType === 'metamask' ? 'MetaMask' : 'Trust Wallet'}를 설치해주세요!`);
             return;
         }
 
         try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            // 여러 지갑이 설치된 경우 처리
+            let targetProvider = window.ethereum;
+
+            // providers가 있는 경우 (여러 지갑이 설치된 경우)
+            if (window.ethereum.providers) {
+                targetProvider = window.ethereum.providers.find(provider => {
+                    if (walletType === 'metamask') {
+                        return provider.isMetaMask;
+                    } else if (walletType === 'trust') {
+                        return provider.isTrust;
+                    }
+                    return false;
+                });
+
+                if (!targetProvider) {
+                    alert(`${walletType === 'metamask' ? 'MetaMask' : 'Trust Wallet'}를 찾을 수 없습니다.`);
+                    return;
+                }
+            }
+
+            // 지갑 연결 요청
+            const accounts = await targetProvider.request({ method: 'eth_requestAccounts' });
+            if (!accounts || accounts.length === 0) {
+                alert('계정을 선택해주세요!');
+                return;
+            }
+
+            // 계정 설정
             this.setAccount(accounts[0]);
 
-            const provider = new ethers.BrowserProvider(window.ethereum);
+            // 잔액 조회
+            const provider = new ethers.BrowserProvider(targetProvider);
             const balance = await provider.getBalance(accounts[0]);
             this.setBalance(ethers.formatEther(balance));
+
         } catch (error) {
             console.error('지갑 연결 실패:', error);
+            if (error.code === 4001) {
+                alert('지갑 연결이 거부되었습니다.');
+            } else {
+                alert('지갑 연결에 실패했습니다. 다시 시도해주세요.');
+            }
         }
-    }
-    if (walletType === 'trust') {
-        if (typeof window.ethereum === 'undefined') {
-            alert('Trust Wallet을 설치해주세요!');
-            return;
-        }
-
-        try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            this.setAccount(accounts[0]);
-
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const balance = await provider.getBalance(accounts[0]);
-            this.setBalance(ethers.formatEther(balance));
-        } catch (error) {
-            console.error('지갑 연결 실패:', error);
-        }
-    }
     },
 
     // 송금 함수
